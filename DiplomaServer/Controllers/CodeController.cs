@@ -21,7 +21,7 @@ public class CodeController : ControllerBase
         var testCode = new Code
         {
             StaticPart = "bool functionThatReturnsTrue(){<inner>} <outer>",
-            UsersInnerPart = "return someOuterFunction()",
+            UsersInnerPart = "return someOuterFunction();",
             UsersOuterPart = "bool someOuterFunction(){return true;}",
             Tests = new List<string>{"functionThatReturnsTrue() == true"}
         };

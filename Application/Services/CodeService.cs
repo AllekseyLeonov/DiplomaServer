@@ -1,6 +1,7 @@
 ﻿using Application.Interfaces.Services;
 using Application.Utils;
 using Core;
+using Microsoft.CodeAnalysis.CSharp.Scripting;
 
 namespace Application.Services;
 
@@ -10,6 +11,8 @@ public class CodeService : ICodeService
     {
         string codeToCheck = CodeHelper.GetFormattedCode(code);
 
-        return true;
+        var result = (bool) CSharpScript.EvaluateAsync(codeToCheck).Result;
+
+        return result;
     }
 }
