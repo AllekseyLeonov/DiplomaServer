@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiplomaServer", "DiplomaServer\DiplomaServer.csproj", "{AAD0C26C-AA91-45C9-8D91-08E0FF9A2E97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{194A540F-F3FC-4BBA-977B-7AFE57012D04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{94FE3EA9-6AF8-4B3E-8EF7-59D31AC74A1A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{AAD0C26C-AA91-45C9-8D91-08E0FF9A2E97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAD0C26C-AA91-45C9-8D91-08E0FF9A2E97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAD0C26C-AA91-45C9-8D91-08E0FF9A2E97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{194A540F-F3FC-4BBA-977B-7AFE57012D04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{194A540F-F3FC-4BBA-977B-7AFE57012D04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{194A540F-F3FC-4BBA-977B-7AFE57012D04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{194A540F-F3FC-4BBA-977B-7AFE57012D04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94FE3EA9-6AF8-4B3E-8EF7-59D31AC74A1A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94FE3EA9-6AF8-4B3E-8EF7-59D31AC74A1A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94FE3EA9-6AF8-4B3E-8EF7-59D31AC74A1A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94FE3EA9-6AF8-4B3E-8EF7-59D31AC74A1A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
