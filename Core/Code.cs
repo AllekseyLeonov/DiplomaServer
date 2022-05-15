@@ -8,5 +8,5 @@ public class Code
     
     public string UsersOuterPart { get; set; }
     
-    public List<string> Tests { get; set; }
+    public string Tests { get; set; }
 }

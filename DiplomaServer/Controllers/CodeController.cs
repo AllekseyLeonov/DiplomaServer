@@ -23,7 +23,7 @@ public class CodeController : ControllerBase
             StaticPart = "bool functionThatReturnsTrue(){<inner>} <outer>",
             UsersInnerPart = "return someOuterFunction();",
             UsersOuterPart = "bool someOuterFunction(){return true;}",
-            Tests = new List<string>{"functionThatReturnsTrue() == true"}
+            Tests = "return functionThatReturnsTrue() == true;"
         };
 
         return Ok(_codeService.IsCodeValid(testCode));
