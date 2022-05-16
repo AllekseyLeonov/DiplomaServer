@@ -1,4 +1,4 @@
-﻿using Core;
+﻿using Application.Interfaces.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomaServer.Controllers;
@@ -7,39 +7,19 @@ namespace DiplomaServer.Controllers;
 [Route("api/[controller]/[action]")]
 public class MaterialsController : ControllerBase
 {
-    [HttpGet]
-    public IActionResult GetMaterials()
+    private readonly IMaterialService _materialService;
+    private readonly ITechnologyService _technologyService;
+    public MaterialsController(IMaterialService materialService, ITechnologyService technologyService)
     {
-        Material mat6 = new Material {Name = "Цикл while", IsAvailable = true};
-        Material mat5 = new Material {Name = "Цикл foreach"};
-        Material mat4 = new Material 
-        {
-            Name = "Цикл for",
-            Children = new List<Material>{mat5},
-            IsAvailable = true
-        };
-        Material mat3 = new Material
-        {
-            Name = "Циклы",
-            Children = new List<Material>{mat4, mat6},
-            IsSectionParent = true,
-            IsAvailable = true
-        };
-        Material mat2 = new Material
-        {
-            Name = "Массивы",
-            Children = new List<Material>{mat3},
-            IsCompleted = true,
-            IsAvailable = true
-        };
-        Material mat1 = new Material
-        {
-            Name = "Переменные",
-            Children = new List<Material>{mat2},
-            IsCompleted = true,
-            IsAvailable = true
-        };
-
-        return Ok(mat1);
+        _materialService = materialService;
+        _technologyService = technologyService;
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetMaterialsTree(Guid technologyId)
+    {
+        var technology = await _technologyService.GetTechnology(technologyId);
+        var material = await _materialService.GetMaterialsTree(technology.RootMaterialId);
+        return Ok(material);
     }
 }

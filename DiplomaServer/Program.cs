@@ -1,5 +1,9 @@
 using Application.Interfaces.Services;
 using Application.Services;
+using Microsoft.EntityFrameworkCore;
+using Persistence;
+using Persistence.Interfaces;
+using Persistence.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +14,15 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddCors();
 
-builder.Services.AddTransient<ICodeService, CodeService>();
+builder.Services.AddDbContext<Context>(optionsBuilder =>
+    optionsBuilder.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
+builder.Services.AddScoped<ICodeService, CodeService>();
+builder.Services.AddScoped<IMaterialService, MaterialService>();
+builder.Services.AddScoped<ITechnologyService, TechnologyService>();
+builder.Services.AddScoped<IMaterialsRepository, MaterialsRepository>();
+builder.Services.AddScoped<ITechnologyRepository, TechnologyRepository>();
 
 var app = builder.Build();
 

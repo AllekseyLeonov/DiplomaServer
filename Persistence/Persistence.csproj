@@ -7,12 +7,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Core\Core.csproj" />
-      <ProjectReference Include="..\Persistence\Persistence.csproj" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
+      <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="6.0.5" />
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.2.0-4.final" />
+      <ProjectReference Include="..\Core\Core.csproj" />
     </ItemGroup>
 
 </Project>

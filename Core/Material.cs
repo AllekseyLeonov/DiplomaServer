@@ -7,5 +7,6 @@ public class Material
     public bool IsSectionParent { get; set; }
     public bool IsAvailable { get; set; }
     public bool IsCompleted { get; set; }
+    public Guid? ParentId { get; set; }
     public List<Material>? Children { get; set; }
 }
