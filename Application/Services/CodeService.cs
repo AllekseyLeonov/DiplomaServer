@@ -1,15 +1,28 @@
 ﻿using System.Diagnostics;
 using Application.Interfaces.Services;
+using Application.Models;
+using Application.Models.CheckCode;
 using Application.Utils;
 using Core;
+using Persistence.Interfaces;
 
 namespace Application.Services;
 
 public class CodeService : ICodeService
 {
-    public bool IsCodeValid(Code code)
+    private readonly ICodeRepository _repository;
+    
+    public CodeService(ICodeRepository repository)
     {
-        string codeToCheck = CodeHelper.GetFormattedCode(code);
+        _repository = repository;
+    }
+    
+    public async Task<CheckCodeResult> IsCodeValid(CheckCodeRequest request)
+    {
+        var result = new CheckCodeResult();
+
+        var code = await _repository.GetCodeByPracticeId(request.PracticeId);
+        string codeToCheck = CodeHelper.GetFormattedCode(code, request.InnerCode, request.OuterCode);
 
         var processInfo = new ProcessStartInfo("docker", $"run -it --rm check-code {codeToCheck}")
         {
@@ -23,8 +36,23 @@ public class CodeService : ICodeService
         using (var process = new Process())
         {
             process.StartInfo = processInfo;
-            process.OutputDataReceived += (_, e) => Console.WriteLine(e.Data);
-            process.ErrorDataReceived += (_, e) => Console.WriteLine(e.Data);
+            
+            process.OutputDataReceived += (_, e) =>
+            {
+                if (e.Data is null) return;
+                if (!e.Data.StartsWith("Result") && ! e.Data.StartsWith("Error")) return;
+                
+                result.Messages.Add(e.Data);
+                Console.WriteLine(e.Data);
+            };
+            process.ErrorDataReceived += (_, e) =>
+            {
+                if (e.Data is null) return;
+                if (!e.Data.StartsWith("Result") && ! e.Data.StartsWith("Error")) return;
+                
+                result.Messages.Add(e.Data);
+                Console.WriteLine(e.Data);
+            };
 
             process.Start();
             process.BeginOutputReadLine();
@@ -40,6 +68,8 @@ public class CodeService : ICodeService
             process.Close();
         }
 
-        return exitCode == 1;
+        result.IsValid = exitCode == 1;
+
+        return result;
     }
 }

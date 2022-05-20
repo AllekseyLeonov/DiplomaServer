@@ -1,5 +1,5 @@
 ﻿using Application.Interfaces.Services;
-using Core;
+using Application.Models.CheckCode;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DiplomaServer.Controllers;
@@ -16,16 +16,8 @@ public class CodeController : ControllerBase
     }
     
     [HttpPost]
-    public IActionResult CheckCode()
+    public async Task<IActionResult> CheckCode(CheckCodeRequest model)
     {
-        var testCode = new Code
-        {
-            StaticPart = "bool functionThatReturnsTrue(){<inner>} <outer>",
-            UsersInnerPart = "return someOuterFunction();",
-            UsersOuterPart = "bool someOuterFunction(){return true;}",
-            Tests = "return functionThatReturnsTrue() == true;"
-        };
-
-        return Ok(_codeService.IsCodeValid(testCode));
+        return Ok(await _codeService.IsCodeValid(model));
     }
 }

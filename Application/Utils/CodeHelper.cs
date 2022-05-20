@@ -4,12 +4,14 @@ namespace Application.Utils;
 
 public static class CodeHelper
 {
-    public static string GetFormattedCode(Code code)
+    public static string GetFormattedCode(Code code, string innerCode, string outerCode)
     {
         var codeWithInputs = code.StaticPart
-            .Replace("<inner>", code.UsersInnerPart)
-            .Replace("<outer>", code.UsersOuterPart);
+            .Replace("<inner>", "\n" + innerCode)
+            .Replace("<outer>", "\n" + outerCode);
+        codeWithInputs += "return ";
         codeWithInputs += code.Tests;
+        codeWithInputs += ";";
 
         return codeWithInputs;
     }

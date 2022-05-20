@@ -15,7 +15,8 @@ public sealed class Context : DbContext
     public DbSet<Technology> Technologies { get; set; }
     public DbSet<Theory> Theories { get; set; }
     public DbSet<Practice> Practices { get; set; }
-
+    public DbSet<Code> Codes { get; set; }
+ 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Material>()
@@ -39,6 +40,11 @@ public sealed class Context : DbContext
             .HasOne(m => m.Theory)
             .WithOne(t => t.Material)
             .HasForeignKey<Material>(m => m.TheoryId);
+        
+        modelBuilder.Entity<Code>()
+            .HasOne(c => c.Practice)
+            .WithOne(p => p.Code)
+            .HasForeignKey<Code>(c => c.PracticeId);
 
         Material mat6 = new Material
         {
@@ -103,8 +109,14 @@ public sealed class Context : DbContext
             Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
             Description = "задачи про переменные",
             TheoryId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-            StaticCode = "bool functionThatReturnsTrue(){<inner>} <outer>",
             Title = "Переменные"
+        };
+        Code code1 = new Code()
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            StaticPart = "bool functionThatReturnsTrue(){<inner>} <outer>",
+            Tests = "functionThatReturnsTrue() == true",
+            PracticeId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
         };
         Theory theory1 = new Theory
         {
@@ -116,5 +128,6 @@ public sealed class Context : DbContext
         modelBuilder.Entity<Practice>().HasData(practice1);
         modelBuilder.Entity<Material>().HasData(mat1, mat2, mat3, mat4, mat5, mat6);
         modelBuilder.Entity<Technology>().HasData(tech1);
+        modelBuilder.Entity<Code>().HasData(code1);
     }
 }

@@ -2,11 +2,10 @@
 
 public class Code
 {
+    public Guid Id { get; set; }
     public string StaticPart { get; set; }
-    
-    public string UsersInnerPart { get; set; }
-    
-    public string UsersOuterPart { get; set; }
-    
     public string Tests { get; set; }
+    
+    public Guid PracticeId { get; set; }
+    public Practice Practice { get; set; }
 }

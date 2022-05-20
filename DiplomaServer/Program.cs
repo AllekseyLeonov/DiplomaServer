@@ -21,8 +21,12 @@ builder.Services.AddDbContext<Context>(optionsBuilder =>
 builder.Services.AddScoped<ICodeService, CodeService>();
 builder.Services.AddScoped<IMaterialService, MaterialService>();
 builder.Services.AddScoped<ITechnologyService, TechnologyService>();
+builder.Services.AddScoped<IPracticeService, PracticeService>();
+
 builder.Services.AddScoped<IMaterialsRepository, MaterialsRepository>();
 builder.Services.AddScoped<ITechnologyRepository, TechnologyRepository>();
+builder.Services.AddScoped<IPracticeRepository, PracticeRepository>();
+builder.Services.AddScoped<ICodeRepository, CodeRepository>();
 
 var app = builder.Build();
 

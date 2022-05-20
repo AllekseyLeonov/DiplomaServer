@@ -1,8 +1,10 @@
-﻿using Core;
+﻿using Application.Models;
+using Application.Models.CheckCode;
+using Core;
 
 namespace Application.Interfaces.Services;
 
 public interface ICodeService
 {
-    public bool IsCodeValid(Code code);
+    public Task<CheckCodeResult> IsCodeValid(CheckCodeRequest request);
 }

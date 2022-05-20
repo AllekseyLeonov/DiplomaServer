@@ -10,5 +10,6 @@ public class Practice
     
     public string Title { get; set; }
     public string Description { get; set; }
-    public string StaticCode { get; set; }
+    
+    public Code Code { get; set; }
 }
