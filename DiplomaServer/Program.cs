@@ -37,7 +37,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors(policyBuilder => policyBuilder.AllowAnyHeader().AllowAnyOrigin());
-
+app.UseStaticFiles("/Pages");
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
