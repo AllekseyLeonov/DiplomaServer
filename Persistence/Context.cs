@@ -16,6 +16,7 @@ public sealed class Context : DbContext
     public DbSet<Theory> Theories { get; set; }
     public DbSet<Practice> Practices { get; set; }
     public DbSet<Code> Codes { get; set; }
+    public DbSet<User> Users { get; set; }
  
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -40,6 +41,28 @@ public sealed class Context : DbContext
             .HasOne(m => m.Theory)
             .WithOne(t => t.Material)
             .HasForeignKey<Material>(m => m.TheoryId);
+        
+        modelBuilder
+            .Entity<User>()
+            .HasMany(u => u.CompletedMaterials)
+            .WithMany(m => m.UsersWhoHasAccess)
+            .UsingEntity(j => j.HasData(
+                new
+                {
+                    UsersWhoHasAccessId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                    CompletedMaterialsId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                }, 
+                new
+                {
+                    UsersWhoHasAccessId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                    CompletedMaterialsId = Guid.Parse("00000000-0000-0000-0000-000000000002"), 
+                },
+                new
+                {
+                    UsersWhoHasAccessId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+                    CompletedMaterialsId = Guid.Parse("00000000-0000-0000-0000-000000000003"),
+                })
+            );
         
         modelBuilder.Entity<Code>()
             .HasOne(c => c.Practice)
@@ -123,11 +146,19 @@ public sealed class Context : DbContext
             Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
             Filename = "theory1.html",
         };
+        User user = new User
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            Name = "name",
+            Login = "login",
+            Password = "password",
+        };
         
         modelBuilder.Entity<Theory>().HasData(theory1);
         modelBuilder.Entity<Practice>().HasData(practice1);
         modelBuilder.Entity<Material>().HasData(mat1, mat2, mat3, mat4, mat5, mat6);
         modelBuilder.Entity<Technology>().HasData(tech1);
         modelBuilder.Entity<Code>().HasData(code1);
+        modelBuilder.Entity<User>().HasData(user);
     }
 }

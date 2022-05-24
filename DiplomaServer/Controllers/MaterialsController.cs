@@ -9,10 +9,15 @@ public class MaterialsController : ControllerBase
 {
     private readonly IMaterialService _materialService;
     private readonly ITechnologyService _technologyService;
-    public MaterialsController(IMaterialService materialService, ITechnologyService technologyService)
+    private readonly IUserService _userService;
+    public MaterialsController(
+        IMaterialService materialService, 
+        ITechnologyService technologyService,
+        IUserService userService)
     {
         _materialService = materialService;
         _technologyService = technologyService;
+        _userService = userService;
     }
     
     [HttpGet]
@@ -21,5 +26,12 @@ public class MaterialsController : ControllerBase
         var technology = await _technologyService.GetTechnology(technologyId);
         var material = await _materialService.GetMaterialsTree(technology.RootMaterialId);
         return Ok(material);
+    }
+    
+    [HttpGet]
+    public async Task<IActionResult> GetCompletedMaterials(Guid userId)
+    {
+        var response = await _userService.GetCompletedMaterials(userId);
+        return Ok(response);
     }
 }

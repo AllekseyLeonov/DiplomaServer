@@ -17,4 +17,6 @@ public class Material
     
     public Guid? ParentId { get; set; }
     public List<Material>? Children { get; set; }
+    
+    public List<User> UsersWhoHasAccess { get; set; }
 }
