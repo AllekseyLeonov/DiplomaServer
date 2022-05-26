@@ -21,6 +21,10 @@ public class DialogRepository : IDialogRepository
             .Include(dialog => dialog.User)
             .Where(dialog => dialog.ModeratorId == userId || dialog.UserId == userId)
             .ToListAsync();
+        foreach (var dialog in dialogs)
+        {
+            dialog.Messages.Sort((m1, m2) => m1.DateTime > m2.DateTime? 1:-1);
+        }
         return dialogs;
     }
 

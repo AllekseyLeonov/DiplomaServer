@@ -4,6 +4,7 @@ public class PracticeResponse
 {
     public Guid Id { get; set; }
     public Guid? TheoryId { get; set; }
+    public Guid ModeratorId { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     

@@ -20,6 +20,7 @@ public class PracticeService : IPracticeService
         var response = new PracticeResponse
         {
             Id = practice.Id,
+            ModeratorId = practice.ModeratorId,
             Title = practice.Title,
             Description = practice.Description,
             TheoryId = practice.TheoryId,
