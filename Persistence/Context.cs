@@ -65,6 +65,11 @@ public sealed class Context : DbContext
                     CompletedMaterialsId = Guid.Parse("00000000-0000-0000-0000-000000000003"),
                 })
             );
+        modelBuilder.Entity<Practice>()
+            .HasOne(p => p.Moderator)
+            .WithMany()
+            .HasForeignKey(p => p.ModeratorId);
+        
         modelBuilder.Entity<Message>()
             .HasOne<Dialog>()
             .WithMany(d => d.Messages)
@@ -152,7 +157,8 @@ public sealed class Context : DbContext
             Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
             Description = "задачи про переменные",
             TheoryId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-            Title = "Переменные"
+            Title = "Переменные",
+            ModeratorId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
         };
         Code code1 = new Code()
         {

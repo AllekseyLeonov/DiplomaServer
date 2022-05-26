@@ -12,4 +12,7 @@ public class Practice
     public string Description { get; set; }
     
     public Code Code { get; set; }
+    
+    public User Moderator { get; set; }
+    public Guid ModeratorId { get; set; }
 }
