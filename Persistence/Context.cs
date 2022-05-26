@@ -7,8 +7,8 @@ public sealed class Context : DbContext
 {
     public Context(DbContextOptions<Context> options) : base(options)
     {
-        Database.EnsureDeleted();
-        Database.EnsureCreated();
+        //Database.EnsureDeleted();
+        //Database.EnsureCreated();
     }
 
     public DbSet<Material> Materials { get; set; }
@@ -17,6 +17,8 @@ public sealed class Context : DbContext
     public DbSet<Practice> Practices { get; set; }
     public DbSet<Code> Codes { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<Message> Messages { get; set; }
+    public DbSet<Dialog> Dialogs { get; set; }
  
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -63,6 +65,24 @@ public sealed class Context : DbContext
                     CompletedMaterialsId = Guid.Parse("00000000-0000-0000-0000-000000000003"),
                 })
             );
+        modelBuilder.Entity<Message>()
+            .HasOne<Dialog>()
+            .WithMany(d => d.Messages)
+            .HasForeignKey(m => m.DialogId);
+        modelBuilder.Entity<Message>()
+            .HasOne(m => m.Sender)
+            .WithMany()
+            .HasForeignKey(m => m.SenderId);
+        modelBuilder.Entity<Dialog>()
+            .HasOne(d => d.Moderator)
+            .WithMany()
+            .HasForeignKey(d=>d.ModeratorId)
+            .OnDelete(DeleteBehavior.NoAction);
+        modelBuilder.Entity<Dialog>()
+            .HasOne(d => d.User)
+            .WithMany()
+            .HasForeignKey(d=>d.UserId)
+            .OnDelete(DeleteBehavior.NoAction);;
         
         modelBuilder.Entity<Code>()
             .HasOne(c => c.Practice)
@@ -149,9 +169,70 @@ public sealed class Context : DbContext
         User user = new User
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
-            Name = "name",
+            Name = "regular",
             Login = "login",
             Password = "password",
+            Role = "regular"
+        };
+        User moderator = new User
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            Name = "moderator",
+            Login = "moderator",
+            Password = "password",
+            Role = "moderator"
+        };
+        Dialog dialog1 = new Dialog
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            ModeratorId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            UserId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+        };
+        Dialog dialog2 = new Dialog
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            ModeratorId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            UserId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+        };
+        Message message1 = new Message
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            DialogId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            DateTime = DateTime.Now,
+            SenderId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            Text = "Hi! I have a question..."
+        };
+        Message message2 = new Message
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            DialogId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            DateTime = DateTime.Now,
+            SenderId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            Text = "Hi! How I can help you?"
+        };
+        Message message3 = new Message
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000003"),
+            DialogId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            DateTime = DateTime.Now,
+            SenderId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            Text = "Hello! How to solve this..."
+        };
+        Message message4 = new Message
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000004"),
+            DialogId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            DateTime = DateTime.Now,
+            SenderId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            Text = "Hello! You should try foreach cycle"
+        };
+        Message message5 = new Message
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000005"),
+            DialogId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            DateTime = DateTime.Now,
+            SenderId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            Text = "Thanks"
         };
         
         modelBuilder.Entity<Theory>().HasData(theory1);
@@ -159,6 +240,8 @@ public sealed class Context : DbContext
         modelBuilder.Entity<Material>().HasData(mat1, mat2, mat3, mat4, mat5, mat6);
         modelBuilder.Entity<Technology>().HasData(tech1);
         modelBuilder.Entity<Code>().HasData(code1);
-        modelBuilder.Entity<User>().HasData(user);
+        modelBuilder.Entity<User>().HasData(user, moderator);
+        modelBuilder.Entity<Dialog>().HasData(dialog1, dialog2);
+        modelBuilder.Entity<Message>().HasData(message1, message2, message3, message4, message5);
     }
 }

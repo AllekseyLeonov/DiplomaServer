@@ -23,12 +23,14 @@ builder.Services.AddScoped<IMaterialService, MaterialService>();
 builder.Services.AddScoped<ITechnologyService, TechnologyService>();
 builder.Services.AddScoped<IPracticeService, PracticeService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IDialogService, DialogService>();
 
 builder.Services.AddScoped<IMaterialsRepository, MaterialsRepository>();
 builder.Services.AddScoped<ITechnologyRepository, TechnologyRepository>();
 builder.Services.AddScoped<IPracticeRepository, PracticeRepository>();
 builder.Services.AddScoped<ICodeRepository, CodeRepository>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IDialogRepository, DialogRepository>();
 
 var app = builder.Build();
 

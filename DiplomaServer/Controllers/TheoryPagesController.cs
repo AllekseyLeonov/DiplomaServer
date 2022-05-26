@@ -15,6 +15,7 @@ public class TheoryPagesController : ControllerBase
         var html = System.IO.File.ReadAllText(path);
         var theory = new TheoryDto
         {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
             Content = html
         };
         return Ok(theory);
