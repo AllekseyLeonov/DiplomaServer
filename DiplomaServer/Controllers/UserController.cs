@@ -28,4 +28,11 @@ public class UserController: ControllerBase
         var response = await _userService.TryToCreateAccount(request);
         return Ok(response);
     }
+    
+    [HttpPost]
+    public async Task<IActionResult> ConfirmCompletedTask(ConfirmCompletedTaskRequest request)
+    {
+        await _userService.ConfirmCompletedTask(request);
+        return Ok();
+    }
 }

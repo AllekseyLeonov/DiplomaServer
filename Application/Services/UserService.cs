@@ -7,16 +7,18 @@ namespace Application.Services;
 
 public class UserService : IUserService
 {
-    private readonly IUserRepository _repository;
+    private readonly IUserRepository _userRepository;
+    private readonly IMaterialsRepository _materialsRepository;
     
-    public UserService(IUserRepository repository)
+    public UserService(IUserRepository userRepository, IMaterialsRepository materialsRepository)
     {
-        _repository = repository;
+        _userRepository = userRepository;
+        _materialsRepository = materialsRepository;
     }
     
     public async Task<LoginResponse> TryToLogin(LoginRequest request)
     {
-        var user = await _repository.GetUserByCredentials(request.Login, request.Password);
+        var user = await _userRepository.GetUserByCredentials(request.Login, request.Password);
         var response = new LoginResponse
         {
             IsSucceed = user != null,
@@ -28,7 +30,7 @@ public class UserService : IUserService
     public async Task<CreateAccountResponse> TryToCreateAccount(CreateAccountRequest request)
     {
         var response = new CreateAccountResponse();
-        var user = await _repository.GetUserByLogin(request.Login);
+        var user = await _userRepository.GetUserByLogin(request.Login);
         if (user is not null)
         {
             response.User = null;
@@ -42,8 +44,9 @@ public class UserService : IUserService
             Login = request.Login,
             Password = request.Password,
             Name = request.Name,
+            Role = "Regular"
         };
-        await _repository.AddUser(newUser);
+        await _userRepository.AddUser(newUser);
 
         response.IsSucceed = true;
         response.User = newUser;
@@ -52,7 +55,12 @@ public class UserService : IUserService
 
     public async Task<List<Guid>> GetCompletedMaterials(Guid userId)
     {
-        var materials = await _repository.GetCompletedMaterials(userId);
+        var materials = await _userRepository.GetCompletedMaterials(userId);
         return materials;
+    }
+
+    public async Task ConfirmCompletedTask(ConfirmCompletedTaskRequest request)
+    {
+        await _userRepository.ConfirmCompletedTask(request.UserId, request.PracticeId);
     }
 }

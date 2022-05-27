@@ -1,9 +1,7 @@
 ﻿using System.Diagnostics;
 using Application.Interfaces.Services;
-using Application.Models;
 using Application.Models.CheckCode;
 using Application.Utils;
-using Core;
 using Persistence.Interfaces;
 
 namespace Application.Services;

@@ -8,4 +8,5 @@ public interface IUserRepository
     public Task<User?> GetUserByLogin(string login);
     public Task AddUser(User user);
     public Task<List<Guid>> GetCompletedMaterials(Guid userId);
+    public Task ConfirmCompletedTask(Guid userId, Guid practiceId);
 }

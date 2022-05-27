@@ -38,4 +38,16 @@ public class UserRepository : IUserRepository
             .FirstAsync(user => user.Id == userId);
         return user.CompletedMaterials.Select(material => material.Id).ToList();
     }
+
+    public async Task ConfirmCompletedTask(Guid userId, Guid practiceId)
+    {
+        var material = await _context.Materials.FirstAsync(material => material.PracticeId == practiceId);
+        var user = await _context.Users.Include(u=>u.CompletedMaterials).FirstAsync(user => user.Id == userId);
+
+        if (user.CompletedMaterials.FirstOrDefault(completedMaterial => completedMaterial.Id == material.Id) == null)
+        {
+            user.CompletedMaterials.Add(material);
+            await _context.SaveChangesAsync();
+        }
+    }
 }

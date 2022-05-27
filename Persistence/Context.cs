@@ -134,12 +134,13 @@ public sealed class Context : DbContext
             ParentId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
             IsCompleted = true,
             IsAvailable = true,
+            PracticeId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
         };
         Material mat1 = new Material
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
             Name = "Переменные",
-            Description = "Краткое описание того, что будет в этом материале",
+            Description = "Для хранения данных в программе применяются переменные. Переменная представляет именнованную область памяти, в которой хранится значение определенного типа. Переменная имеет тип, имя и значение. Тип определяет, какого рода информацию может хранить переменная.",
             ParentId = null,
             IsCompleted = true,
             IsAvailable = true,
@@ -160,6 +161,14 @@ public sealed class Context : DbContext
             Title = "Переменные",
             ModeratorId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
         };
+        Practice practice2 = new Practice
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            Description = "задачи про переменные",
+            TheoryId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            Title = "Переменные",
+            ModeratorId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+        };
         Code code1 = new Code()
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
@@ -167,9 +176,21 @@ public sealed class Context : DbContext
             Tests = "functionThatReturnsTrue() == true",
             PracticeId = Guid.Parse("00000000-0000-0000-0000-000000000001"),
         };
+        Code code2 = new Code()
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+            StaticPart = "bool functionThatReturnsTrue(){<inner>} <outer>",
+            Tests = "functionThatReturnsTrue() == true",
+            PracticeId = Guid.Parse("00000000-0000-0000-0000-000000000002"),
+        };
         Theory theory1 = new Theory
         {
             Id = Guid.Parse("00000000-0000-0000-0000-000000000001"),
+            Filename = "theory1.html",
+        };
+        Theory theory2 = new Theory
+        {
+            Id = Guid.Parse("00000000-0000-0000-0000-000000000002"),
             Filename = "theory1.html",
         };
         User user = new User
@@ -241,11 +262,11 @@ public sealed class Context : DbContext
             Text = "Thanks"
         };
         
-        modelBuilder.Entity<Theory>().HasData(theory1);
-        modelBuilder.Entity<Practice>().HasData(practice1);
+        modelBuilder.Entity<Theory>().HasData(theory1, theory2);
+        modelBuilder.Entity<Practice>().HasData(practice1, practice2);
         modelBuilder.Entity<Material>().HasData(mat1, mat2, mat3, mat4, mat5, mat6);
         modelBuilder.Entity<Technology>().HasData(tech1);
-        modelBuilder.Entity<Code>().HasData(code1);
+        modelBuilder.Entity<Code>().HasData(code1, code2);
         modelBuilder.Entity<User>().HasData(user, moderator);
         modelBuilder.Entity<Dialog>().HasData(dialog1, dialog2);
         modelBuilder.Entity<Message>().HasData(message1, message2, message3, message4, message5);
